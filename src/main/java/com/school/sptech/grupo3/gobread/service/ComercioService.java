@@ -28,21 +28,21 @@ public class ComercioService {
 
 
 
-    public ResponseEntity<ComercioResponse> criarComercio(ComercioRequest comercioRequest) {
-        final Comercio comercio = modelMapper.from(comercioRequest);
-        final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(comercio.getEndereco().getCep());
-        comercio.setEndereco(new Endereco(
-                comercio.getEndereco().getCep(),
-                enderecoViaCep.logradouro(),
-                comercio.getEndereco().getNumero(),
-                comercio.getEndereco().getComplemento(),
-                enderecoViaCep.bairro(),
-                enderecoViaCep.localidade(),
-                enderecoViaCep.uf()
-        ));
-        listaComercio.add(comercio);
-        return ResponseEntity.status(201).body(responseMapper.from(comercio));
-    }
+//    public ResponseEntity<ComercioResponse> criarComercio(ComercioRequest comercioRequest) {
+//        final Comercio comercio = modelMapper.from(comercioRequest);
+//        final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(comercio.getEndereco().getCep());
+//        comercio.setEndereco(new Endereco(
+//                comercio.getEndereco().getCep(),
+//                enderecoViaCep.logradouro(),
+//                comercio.getEndereco().getNumero(),
+//                comercio.getEndereco().getComplemento(),
+//                enderecoViaCep.bairro(),
+//                enderecoViaCep.localidade(),
+//                enderecoViaCep.uf()
+//        ));
+//        listaComercio.add(comercio);
+//        return ResponseEntity.status(201).body(responseMapper.from(comercio));
+//    }
 
 
 }

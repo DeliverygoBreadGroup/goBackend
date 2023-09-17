@@ -1,11 +1,19 @@
 package com.school.sptech.grupo3.gobread.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@Entity
 public class Endereco {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String cep;
     private String rua;
     private Integer numero;
@@ -17,7 +25,8 @@ public class Endereco {
     public Endereco() {
     }
 
-    public Endereco(String cep, String rua, Integer numero, String complemento, String bairro, String cidade, String estado) {
+    public Endereco(Integer id, String cep, String rua, Integer numero, String complemento, String bairro, String cidade, String estado) {
+        this.id = id;
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;

@@ -7,9 +7,7 @@ import lombok.Builder;
 
 public record ClienteResponse(
     String nome,
-    String cpf,
     String telefone,
     String email,
-    String senha,
     Endereco endereco
 ) {}

@@ -26,20 +26,20 @@ public class ClienteController {
         return clienteService.criarCliente(clienteRequest);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ClienteResponse> listarCliente(@PathVariable int id){
-        return clienteService.buscarClientePorId(id);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id, @RequestBody ClienteRequest clienteRequest){
-        return clienteService.atualizarCliente(id, clienteRequest);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ClienteResponse> deletarCliente(@PathVariable int id){
-        return clienteService.deletarCliente(id);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ClienteResponse> listarCliente(@PathVariable int id){
+//        return clienteService.buscarClientePorId(id);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id, @RequestBody ClienteRequest clienteRequest){
+//        return clienteService.atualizarCliente(id, clienteRequest);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<ClienteResponse> deletarCliente(@PathVariable int id){
+//        return clienteService.deletarCliente(id);
+//    }
 
 
 }

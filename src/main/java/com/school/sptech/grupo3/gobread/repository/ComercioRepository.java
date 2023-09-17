@@ -1,4 +1,8 @@
 package com.school.sptech.grupo3.gobread.repository;
 
-public class ComercioRepository {
+import com.school.sptech.grupo3.gobread.entity.Comercio;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ComercioRepository extends JpaRepository<Comercio, Integer> {
+
 }

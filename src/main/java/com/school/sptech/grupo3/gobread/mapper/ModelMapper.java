@@ -6,45 +6,14 @@ import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
-import com.school.sptech.grupo3.gobread.entity.Usuario;
-import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
 
-@Service
-public class ModelMapper {
+@Mapper(componentModel = "spring")
+public interface ModelMapper {
+    Comercio from(ComercioRequest comercioRequest);
 
-    public Comercio from(ComercioRequest comercioRequest) {
-        return new Comercio(
-                comercioRequest.email(),
-                comercioRequest.senha(),
-                comercioRequest.telefone(),
-                comercioRequest.razaoSocial(),
-                comercioRequest.responsavel(),
-                comercioRequest.cnpj(),
-                from(comercioRequest.endereco())
-                );
+    Cliente from(ClienteRequest clienteRequest);
 
-    };
-
-    public Cliente from(ClienteRequest clienteRequest) {
-        return new Cliente(
-                clienteRequest.email(),
-                clienteRequest.senha(),
-                clienteRequest.telefone(),
-                clienteRequest.nome(),
-                clienteRequest.cpf(),
-                from(clienteRequest.endereco())
-        );
-    };
-
-    public Endereco from(EnderecoRequest enderecoRequest) {
-        return Endereco.builder()
-                .cep(enderecoRequest.cep())
-                .numero(enderecoRequest.numero())
-                .complemento(enderecoRequest.complemento())
-                .build();
-    };
-
-
+    Endereco from(EnderecoRequest enderecoRequest);
 
 }

@@ -18,10 +18,10 @@ public class ComercioController {
 
     private final ComercioService comercioService;
 
-    @PostMapping
-    public ResponseEntity<ComercioResponse> cadastrarComercio(@RequestBody ComercioRequest comercioRequest) {
-        return comercioService.criarComercio(comercioRequest);
-    }
+//    @PostMapping
+//    public ResponseEntity<ComercioResponse> cadastrarComercio(@RequestBody ComercioRequest comercioRequest) {
+//        return comercioService.criarComercio(comercioRequest);
+//    }
 
 
 
