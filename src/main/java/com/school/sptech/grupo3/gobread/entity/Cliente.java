@@ -2,13 +2,16 @@ package com.school.sptech.grupo3.gobread.entity;
 
 import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import javax.annotation.processing.Generated;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Builder(toBuilder = true)
 @Entity
-public class Cliente{
+public class Cliente {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
@@ -29,6 +32,9 @@ public class Cliente{
                 this.nome = nome;
                 this.cpf = cpf;
                 this.endereco = endereco;
+        }
+
+        public Cliente() {
         }
 
         public Cliente atualizarEndereco(AddressViaCep addressViaCep) {

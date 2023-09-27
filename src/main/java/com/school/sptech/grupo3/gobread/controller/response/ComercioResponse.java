@@ -5,9 +5,10 @@ import lombok.Builder;
 
 @Builder
 public record ComercioResponse(
-        String responsavel,
+
         String razaoSocial,
+        String responsavel,
         String email,
-        String senha,
+        String telefone,
         Endereco endereco
 ) {}
