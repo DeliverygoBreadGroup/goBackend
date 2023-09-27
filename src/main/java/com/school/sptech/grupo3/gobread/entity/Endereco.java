@@ -22,9 +22,6 @@ public class Endereco {
     private String cidade;
     private String estado;
 
-    public Endereco() {
-    }
-
     public Endereco(Integer id, String cep, String rua, Integer numero, String complemento, String bairro, String cidade, String estado) {
         this.id = id;
         this.cep = cep;

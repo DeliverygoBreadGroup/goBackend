@@ -23,7 +23,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteResponse> cadastrarCliente(@RequestBody ClienteRequest clienteRequest) {
-        return clienteService.criarCliente(clienteRequest);
+         return clienteService.criarCliente(clienteRequest);
     }
 
 //    @GetMapping("/{id}")
