@@ -34,9 +34,9 @@ public class ClienteController {
 //        return clienteService.buscarClientePorId(id);
 //    }
 
-    @GetMapping("/{endereco}")
-    public ResponseEntity<Cliente> findEndereco(@PathVariable Endereco endereco){
-        return clienteService.buscarEnderecoPorFk(endereco);
+    @GetMapping("/{fkEndereco}")
+    public ResponseEntity<Cliente> getClienteByFkEndereco(@PathVariable("fkEndereco") int fkEndereco) {
+        return clienteService.buscarEnderecoPorFk(fkEndereco);
     }
 
     @PutMapping("/{id}")

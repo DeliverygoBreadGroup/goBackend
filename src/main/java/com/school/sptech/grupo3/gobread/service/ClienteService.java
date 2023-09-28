@@ -61,7 +61,7 @@ public class ClienteService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Cliente> buscarEnderecoPorFk(Endereco endereco) {
-        return ResponseEntity.status(200).body(rep.findByendereco(endereco));
+    public ResponseEntity<Cliente> buscarEnderecoPorFk(int fkEndereco) {
+        return ResponseEntity.status(200).body(rep.findByFkEndereco(fkEndereco));
     }
 }
