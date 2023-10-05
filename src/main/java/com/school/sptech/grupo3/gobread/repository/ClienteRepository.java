@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-    @Query("SELECT c FROM Cliente c WHERE c.endereco.id = :fkEndereco")
-    Cliente findByFkEndereco(@Param("fkEndereco") int fkEndereco);
+
+//    @Query("SELECT c FROM Cliente c WHERE c.endereco.id = :fkEndereco")
+//    Cliente findByFkEndereco(@Param("fkEndereco") int fkEndereco);
 
 }

@@ -29,15 +29,15 @@ public class ClienteController {
          return clienteService.criarCliente(clienteRequest);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ClienteResponse> buscarClientePorId(@PathVariable int id){
-//        return clienteService.buscarClientePorId(id);
-//    }
-
-    @GetMapping("/{fkEndereco}")
-    public ResponseEntity<Cliente> getClienteByFkEndereco(@PathVariable("fkEndereco") int fkEndereco) {
-        return clienteService.buscarEnderecoPorFk(fkEndereco);
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponse> buscarClientePorId(@PathVariable int id){
+        return clienteService.buscarClientePorId(id);
     }
+
+//    @GetMapping("/{fkEndereco}")
+//    public ResponseEntity<Cliente> getClienteByFkEndereco(@PathVariable("fkEndereco") int fkEndereco) {
+//        return clienteService.buscarEnderecoPorFk(fkEndereco);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id,@Valid @RequestBody ClienteRequest clienteRequest){

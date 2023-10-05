@@ -20,12 +20,12 @@ public class ClienteService {
     private final EnderecoService enderecoService;
     private final ClienteRepository rep;
 
-//    public  ResponseEntity<ClienteResponse> buscarClientePorId(int id) {
-//      if(rep.existsById(id)){
-//          return ResponseEntity.status(200).body(responseMapper.from(rep.findById(id).orElseThrow()));
-//      }
-//      return ResponseEntity.status(404).build();
-//    }
+    public  ResponseEntity<ClienteResponse> buscarClientePorId(int id) {
+      if(rep.existsById(id)){
+          return ResponseEntity.status(200).body(responseMapper.from(rep.findById(id).orElseThrow()));
+      }
+      return ResponseEntity.status(404).build();
+    }
 
     public ResponseEntity<ClienteResponse> criarCliente(ClienteRequest clienteRequest) {
         final Cliente cliente = modelMapper.from(clienteRequest);
@@ -61,7 +61,7 @@ public class ClienteService {
         return ResponseEntity.status(404).build();
     }
 
-    public ResponseEntity<Cliente> buscarEnderecoPorFk(int fkEndereco) {
-        return ResponseEntity.status(200).body(rep.findByFkEndereco(fkEndereco));
-    }
+//    public ResponseEntity<Cliente> buscarEnderecoPorFk(int fkEndereco) {
+//        return ResponseEntity.status(200).body(rep.findByFkEndereco(fkEndereco));
+//    }
 }
