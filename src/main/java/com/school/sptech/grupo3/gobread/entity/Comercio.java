@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder(toBuilder = true)
 @Entity
 public class Comercio {
@@ -25,6 +28,13 @@ public class Comercio {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fkEndereco", referencedColumnName = "id")
     private Endereco endereco;
+//    @ManyToMany
+////    @JoinTable(
+////            name = "comercio_produto",
+////            joinColumns = @JoinColumn(name = "comercio_id"),
+////            inverseJoinColumns = @JoinColumn(name = "produto_id")
+////    )
+////    private List<Produto> produtos = new ArrayList<>();
 
     public Comercio(Integer id, String email, String senha, String telefone, String razaoSocial, String responsavel, String cnpj, Endereco endereco) {
         this.id = id;

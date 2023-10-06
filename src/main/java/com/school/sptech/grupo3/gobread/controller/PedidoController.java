@@ -19,10 +19,10 @@ public class PedidoController {
 
     private final PedidoService pedidoService;
 
-    @PostMapping
-    public ResponseEntity<Pedido> cadastrar(@RequestBody PedidoRequest pedidoRequest) {
-        pedidoService.cadastrarPedido(pedidoRequest);
-    }
+//    @PostMapping
+//    public ResponseEntity<Pedido> cadastrar(@RequestBody PedidoRequest pedidoRequest) {
+//        pedidoService.cadastrarPedido(pedidoRequest);
+//    }
 
 
 }

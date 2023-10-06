@@ -3,6 +3,7 @@ package com.school.sptech.grupo3.gobread.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder(toBuilder = true)
@@ -12,19 +13,16 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private Double precoUnitario;
-    private Integer qtdProduto;
     private Integer valorPorcao;
+    private String tipoPorcao;
+//    @ManyToMany(mappedBy = "produtos")
+//    private List<Comercio> comercios = new ArrayList<>();
 
-    public Produto(Integer id, String nome, Double precoUnitario, Integer qtdProduto, Integer valorPorcao) {
+    public Produto(Integer id, String nome, Integer valorPorcao, String tipoPorcao) {
         this.id = id;
         this.nome = nome;
-        this.precoUnitario = precoUnitario;
-        this.qtdProduto = qtdProduto;
         this.valorPorcao = valorPorcao;
-    }
-
-    public Produto() {
+        this.tipoPorcao = tipoPorcao;
     }
 
     public Integer getId() {
@@ -43,22 +41,6 @@ public class Produto {
         this.nome = nome;
     }
 
-    public Double getPrecoUnitario() {
-        return precoUnitario;
-    }
-
-    public void setPrecoUnitario(Double precoUnitario) {
-        this.precoUnitario = precoUnitario;
-    }
-
-    public Integer getQtdProduto() {
-        return qtdProduto;
-    }
-
-    public void setQtdProduto(Integer qtdProduto) {
-        this.qtdProduto = qtdProduto;
-    }
-
     public Integer getValorPorcao() {
         return valorPorcao;
     }
@@ -67,4 +49,11 @@ public class Produto {
         this.valorPorcao = valorPorcao;
     }
 
+    public String getTipoPorcao() {
+        return tipoPorcao;
+    }
+
+    public void setTipoPorcao(String tipoPorcao) {
+        this.tipoPorcao = tipoPorcao;
+    }
 }

@@ -19,36 +19,36 @@ public class PedidoService {
     private final ModelMapper modelMapper;
     private final ResponseMapper responseMapper;
 
-
-    public ResponseEntity<PedidoResponse> cadastrarPedido(PedidoRequest pedidoRequest) {
-        List<Integer> diasEntrega = pedidoRequest.diasEntrega();
-        Pedido pedido = modelMapper.from(pedidoRequest);
-        for (int i = 0; i < diasEntrega.size(); i++) {
-            int dia = diasEntrega.get(i);
-            switch (dia) {
-                case 1:
-                    pedido.setDiaEntrega("Segunda-Feira");
-                    rep.save(pedido);
-                    break;
-                case 2:
-                    pedido.setDiaEntrega("Terça-Feira");
-                    rep.save(pedido);
-                    break;
-                case 3:
-                    pedido.setDiaEntrega("Quarta-Feira");
-                    rep.save(pedido);
-                    break;
-                case 4:
-                    pedido.setDiaEntrega("Quinta-Feira");
-                    rep.save(pedido);
-                    break;
-                case 5:
-                    pedido.setDiaEntrega("Sexta-Feira");
-                    rep.save(pedido);
-                    break;
-            }
-
-        }
-
-    }
+//
+//    public ResponseEntity<PedidoResponse> cadastrarPedido(PedidoRequest pedidoRequest) {
+//        List<Integer> diasEntrega = pedidoRequest.diasEntrega();
+//        Pedido pedido = modelMapper.from(pedidoRequest);
+//        for (int i = 0; i < diasEntrega.size(); i++) {
+//            int dia = diasEntrega.get(i);
+//            switch (dia) {
+//                case 1:
+//                    pedido.setDiaEntrega("Segunda-Feira");
+//                    rep.save(pedido);
+//                    break;
+//                case 2:
+//                    pedido.setDiaEntrega("Terça-Feira");
+//                    rep.save(pedido);
+//                    break;
+//                case 3:
+//                    pedido.setDiaEntrega("Quarta-Feira");
+//                    rep.save(pedido);
+//                    break;
+//                case 4:
+//                    pedido.setDiaEntrega("Quinta-Feira");
+//                    rep.save(pedido);
+//                    break;
+//                case 5:
+//                    pedido.setDiaEntrega("Sexta-Feira");
+//                    rep.save(pedido);
+//                    break;
+//            }
+//
+//        }
+//
+//    }
 }

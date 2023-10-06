@@ -2,8 +2,10 @@ package com.school.sptech.grupo3.gobread.service;
 
 import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
+import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
+import com.school.sptech.grupo3.gobread.exceptions.ClienteNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.mapper.ModelMapper;
 import com.school.sptech.grupo3.gobread.mapper.ResponseMapper;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
@@ -11,6 +13,8 @@ import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,23 +24,31 @@ public class ClienteService {
     private final EnderecoService enderecoService;
     private final ClienteRepository rep;
 
-    public  ResponseEntity<ClienteResponse> buscarClientePorId(int id) {
-      if(rep.existsById(id)){
-          return ResponseEntity.status(200).body(responseMapper.from(rep.findById(id).orElseThrow()));
-      }
-      return ResponseEntity.status(404).build();
+    public ClienteResponse buscarClientePorId(int id) throws ClienteNaoEncontradoException {
+      Cliente cliente = this.rep.findById(id).orElseThrow(
+              () -> new ClienteNaoEncontradoException());
+      ClienteResponse clienteResponse = responseMapper.from(cliente);
+      return clienteResponse;
     }
 
-    public ResponseEntity<ClienteResponse> criarCliente(ClienteRequest clienteRequest) {
+    public ClienteResponse loginCliente(LoginRequest loginRequest) throws ClienteNaoEncontradoException {
+        Cliente cliente = this.rep.findByEmailAndSenha(loginRequest.email(), loginRequest.senha()).orElseThrow(
+                ClienteNaoEncontradoException::new
+        );
+        ClienteResponse clienteResponse = responseMapper.from(cliente);
+        return clienteResponse;
+    }
+
+    public ClienteResponse criarCliente(ClienteRequest clienteRequest) {
         final Cliente cliente = modelMapper.from(clienteRequest);
         final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(cliente.getEndereco().getCep());
         final Cliente clienteEnderecoAtualizado = cliente.atualizarEndereco(enderecoViaCep);
         rep.save(clienteEnderecoAtualizado);
         final ClienteResponse clienteResponse = responseMapper.from(clienteEnderecoAtualizado);
-        return ResponseEntity.status(201).body(clienteResponse);
+        return clienteResponse;
     }
 
-    public ResponseEntity<ClienteResponse> atualizarCliente(int id, ClienteRequest clienteRequest){
+    public ClienteResponse atualizarCliente(int id, ClienteRequest clienteRequest) throws ClienteNaoEncontradoException {
         if(rep.existsById(id)){
             final Cliente cliente = modelMapper.from(clienteRequest);
             final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(cliente.getEndereco().getCep());
@@ -45,23 +57,17 @@ public class ClienteService {
             clienteEnderecoAtualizado.getEndereco().setId(id);
             rep.save(clienteEnderecoAtualizado);
             final ClienteResponse clienteResponse = responseMapper.from(clienteEnderecoAtualizado);
-            return ResponseEntity.status(200).body(clienteResponse);
+            return clienteResponse;
         }
-
-        return ResponseEntity.status(404).build();
+        throw new ClienteNaoEncontradoException();
     }
 
-
-
-    public ResponseEntity<ClienteResponse> deletarCliente(int id) {
+    public boolean deletarCliente(int id) throws ClienteNaoEncontradoException {
         if(rep.existsById(id)){
-            rep.deleteById(id);
-            return ResponseEntity.status(204).build();
+            this.rep.deleteById(id);
+            return true;
         }
-        return ResponseEntity.status(404).build();
+        throw new ClienteNaoEncontradoException();
     }
 
-//    public ResponseEntity<Cliente> buscarEnderecoPorFk(int fkEndereco) {
-//        return ResponseEntity.status(200).body(rep.findByFkEndereco(fkEndereco));
-//    }
 }
