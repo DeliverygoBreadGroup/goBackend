@@ -3,6 +3,7 @@ package com.school.sptech.grupo3.gobread.controller;
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
 import com.school.sptech.grupo3.gobread.exceptions.ClienteNaoEncontradoException;
@@ -26,7 +27,7 @@ public class ClienteController {
     private final ClienteService clienteService;
 
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid @RequestBody ClienteRequest clienteRequest) {
          ClienteResponse clienteResponse =  clienteService.criarCliente(clienteRequest);
          return ResponseEntity.status(201).body(clienteResponse);
@@ -38,10 +39,10 @@ public class ClienteController {
         return ResponseEntity.status(200).body(clienteResponse);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<ClienteResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws ClienteNaoEncontradoException{
-        ClienteResponse clienteResponse = clienteService.loginCliente(loginRequest);
-        return ResponseEntity.status(200).body(clienteResponse);
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws ClienteNaoEncontradoException{
+        LoginResponse response = clienteService.autenticar(loginRequest);
+        return ResponseEntity.status(200).body(response);
     }
 
     @PutMapping("/{id}")
