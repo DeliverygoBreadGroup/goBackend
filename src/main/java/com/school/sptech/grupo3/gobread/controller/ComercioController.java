@@ -1,16 +1,18 @@
 package com.school.sptech.grupo3.gobread.controller;
 
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
-import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
-import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
-import com.school.sptech.grupo3.gobread.service.ClienteService;
 import com.school.sptech.grupo3.gobread.service.ComercioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.*;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/comercios")
@@ -40,5 +42,34 @@ public class ComercioController {
     }
 
 
+    @GetMapping("/csv")
+    public ResponseEntity<Void> csv(){
+        comercioService.gerarArquivoCsv();
+        return ResponseEntity.status(200).build();
+    }
 
+    @GetMapping("/download/clientes-csv")
+    public ResponseEntity<byte[]> download(){
+
+        boolean arquivoGerado = comercioService.gerarArquivoCsv();
+        if(arquivoGerado){
+            try {
+                Resource resource = new ClassPathResource("/relatorio-clientes.csv");
+                File file = resource.getFile();
+                InputStream fileInputStream = new FileInputStream(file);
+
+                return ResponseEntity.status(200)
+                        .header("Content-Disposition",
+                                "attachment; filename=relatorio-clientes.csv")
+                        .body(fileInputStream.readAllBytes());
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+                throw new ResponseStatusException(422, "Diretório não encontrado", null);
+            } catch (IOException e){
+                e.printStackTrace();
+                throw new ResponseStatusException(422, "Não foi possível converter para byte[]", null);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

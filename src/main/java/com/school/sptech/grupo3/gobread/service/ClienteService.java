@@ -95,4 +95,7 @@ public class ClienteService {
         throw new ClienteNaoEncontradoException();
     }
 
+
+
+
 }

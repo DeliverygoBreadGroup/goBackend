@@ -2,6 +2,8 @@ package com.school.sptech.grupo3.gobread.service;
 
 import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.apiviacep.ViaCepApi;
+import com.school.sptech.grupo3.gobread.arquivoCsv.ArquivoCsvService;
+import com.school.sptech.grupo3.gobread.arquivoCsv.ListaObj;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
@@ -10,6 +12,7 @@ import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
 import com.school.sptech.grupo3.gobread.mapper.ModelMapper;
 import com.school.sptech.grupo3.gobread.mapper.ResponseMapper;
+import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,9 @@ public class ComercioService {
     private final ModelMapper modelMapper;
     private final ResponseMapper responseMapper;
     private final ComercioRepository rep;
+    private final ClienteRepository clienteRepository;
     private final EnderecoService enderecoService;
+    private final ArquivoCsvService arquivoCsvService;
 
 
 
@@ -66,4 +71,18 @@ public class ComercioService {
         }
         return ResponseEntity.status(404).build();
     }
+
+
+    public boolean gerarArquivoCsv(){
+        List<Cliente>  clientes = this.clienteRepository.findAll();
+        ListaObj<Cliente> listaObjClientes = new ListaObj<>(clientes.size());
+        for(int i = 0; i < clientes.size(); i++){
+            listaObjClientes.adiciona(clientes.get(i));
+        }
+        ListaObj<Cliente> clientesOrdenados = this.arquivoCsvService.selectionSortCliente(listaObjClientes);
+        arquivoCsvService.gravaArquivoCsv(clientesOrdenados, "relatorio-clientes");
+        return true;
+    }
+
+
 }
