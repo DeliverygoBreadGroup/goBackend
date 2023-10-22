@@ -1,22 +1,13 @@
 package com.school.sptech.grupo3.gobread.arquivoCsv;
 
+import java.lang.reflect.Array;
+
 public class ListaObj <T> {
-
-    // 01) Declarar vetor de int:
-    // É inicializado no construtor
     private T[] vetor;
-
-    // 02) Criar atributo nroElem:
-    // Tem dupla função: representa quantos elementos foram adicionado no vetor
-    // Também o índice de onde será adicionado o próximo elemento
     private int nroElem;
 
-    // 03) Criar Construtor:
-    // Recebe como argumento o tamanho máximo do vetor
-    // Cria vetor com tamanho máximo informado
-    // Inicializa nroElem
-    public ListaObj(int tamanho) {
-        this.vetor = (T[]) new Object[tamanho];
+    public ListaObj(int tamanho, Class<T> tipo) {
+        this.vetor = (T[]) Array.newInstance(tipo, tamanho);
         this.nroElem = 0;
     }
 

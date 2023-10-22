@@ -4,20 +4,12 @@ import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
-import com.school.sptech.grupo3.gobread.entity.Cliente;
-import com.school.sptech.grupo3.gobread.entity.Endereco;
-import com.school.sptech.grupo3.gobread.exceptions.ClienteNaoEncontradoException;
+import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ClienteService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
@@ -34,25 +26,25 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteResponse> buscarClientePorId(@PathVariable int id) throws ClienteNaoEncontradoException {
+    public ResponseEntity<ClienteResponse> buscarClientePorId(@PathVariable int id) throws UsuarioNaoEncontradoException {
         ClienteResponse clienteResponse = clienteService.buscarClientePorId(id);
         return ResponseEntity.status(200).body(clienteResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws ClienteNaoEncontradoException{
+    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
         LoginResponse response = clienteService.autenticar(loginRequest);
         return ResponseEntity.status(200).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id,@Valid @RequestBody ClienteRequest clienteRequest) throws ClienteNaoEncontradoException {
+    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id,@Valid @RequestBody ClienteRequest clienteRequest) throws UsuarioNaoEncontradoException {
         ClienteResponse clienteResponse = clienteService.atualizarCliente(id, clienteRequest);
         return ResponseEntity.status(200).body(clienteResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarCliente(@PathVariable int id) throws ClienteNaoEncontradoException {
+    public ResponseEntity<Void> deletarCliente(@PathVariable int id) throws UsuarioNaoEncontradoException {
         boolean isDeleted =  clienteService.deletarCliente(id);
         return ResponseEntity.status(204).build();
     }

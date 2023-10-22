@@ -1,7 +1,10 @@
 package com.school.sptech.grupo3.gobread.controller;
 
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
+import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
+import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ComercioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
-import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/comercios")
@@ -21,9 +23,15 @@ public class ComercioController {
 
     private final ComercioService comercioService;
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     public ResponseEntity<ComercioResponse> cadastrarComercio(@Valid @RequestBody ComercioRequest comercioRequest) {
         return comercioService.criarComercio(comercioRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
+        LoginResponse response = comercioService.autenticar(loginRequest);
+        return ResponseEntity.status(200).body(response);
     }
 
     @GetMapping("/{id}")

@@ -65,19 +65,17 @@ public class ArquivoCsvService {
         }
     }
 
-    public ListaObj<Cliente> selectionSortCliente(ListaObj<Cliente> listaClientes) {
-        for (int i = 0; i < listaClientes.getTamanho() - 1; i++) {
-            int indexMin = i;
-            for (int j = i + 1; j < listaClientes.getTamanho(); j++) {
-                if (listaClientes.getElemento(j).getNome().compareTo(listaClientes.getElemento(indexMin).getNome()) < 0) {
-                    indexMin = j;
+    public static void bubbleSort(ListaObj<Cliente> clientes) {
+        Cliente[] vetor = clientes.getVetor();
+        int n = clientes.getTamanho();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (vetor[j].getNome().compareTo(vetor[j + 1].getNome()) > 0) {
+                    Cliente temp = vetor[j];
+                    vetor[j] = vetor[j + 1];
+                    vetor[j + 1] = temp;
                 }
             }
-            Cliente temp = listaClientes.getElemento(i);
-            listaClientes.adicionaNoIndice(i, listaClientes.getElemento(indexMin));
-            listaClientes.adicionaNoIndice(indexMin, temp);
         }
-
-        return listaClientes;
     }
 }

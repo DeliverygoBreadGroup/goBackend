@@ -5,8 +5,10 @@ import com.school.sptech.grupo3.gobread.apiviacep.ViaCepApi;
 import com.school.sptech.grupo3.gobread.arquivoCsv.ArquivoCsvService;
 import com.school.sptech.grupo3.gobread.arquivoCsv.ListaObj;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
+import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
@@ -14,9 +16,16 @@ import com.school.sptech.grupo3.gobread.mapper.ModelMapper;
 import com.school.sptech.grupo3.gobread.mapper.ResponseMapper;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
+import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +39,40 @@ public class ComercioService {
     private final ClienteRepository clienteRepository;
     private final EnderecoService enderecoService;
     private final ArquivoCsvService arquivoCsvService;
-
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final GerenciadorTokenJwt gerenciadorTokenJwt;
 
 
     public ResponseEntity<ComercioResponse> criarComercio(ComercioRequest comercioRequest) {
         final Comercio comercio = modelMapper.from(comercioRequest);
         final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(comercio.getEndereco().getCep());
-        final Comercio comercioEnderecoAtualiazado = comercio.atualizarEndereco(enderecoViaCep);
-        rep.save(comercioEnderecoAtualiazado);
-        final ComercioResponse comercioResponse = responseMapper.from(comercioEnderecoAtualiazado);
+        final Comercio comercioEnderecoAtualizado = comercio.atualizarEndereco(enderecoViaCep);
+        String senhaCriptografada = passwordEncoder.encode(comercioEnderecoAtualizado.getSenha());
+        comercioEnderecoAtualizado.setSenha(senhaCriptografada);
+        rep.save(comercioEnderecoAtualizado);
+        final ComercioResponse comercioResponse = responseMapper.from(comercioEnderecoAtualizado);
         return ResponseEntity.status(201).body(comercioResponse);
+    }
+
+    public LoginResponse autenticar(LoginRequest usuarioLoginDto) {
+
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.email(), usuarioLoginDto.senha());
+
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
+
+        Comercio usuarioAutenticado =
+                rep.findByEmail(usuarioLoginDto.email())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+        LoginResponse response = new LoginResponse(token);
+        return response;
     }
 
 
@@ -75,14 +108,15 @@ public class ComercioService {
 
     public boolean gerarArquivoCsv(){
         List<Cliente>  clientes = this.clienteRepository.findAll();
-        ListaObj<Cliente> listaObjClientes = new ListaObj<>(clientes.size());
+        ListaObj<Cliente> listaObjClientes = new ListaObj<>(clientes.size(), Cliente.class);
         for(int i = 0; i < clientes.size(); i++){
             listaObjClientes.adiciona(clientes.get(i));
         }
-        ListaObj<Cliente> clientesOrdenados = this.arquivoCsvService.selectionSortCliente(listaObjClientes);
-        arquivoCsvService.gravaArquivoCsv(clientesOrdenados, "relatorio-clientes");
+        this.arquivoCsvService.bubbleSort(listaObjClientes);
+        arquivoCsvService.gravaArquivoCsv(listaObjClientes, "relatorio-clientes");
         return true;
     }
+
 
 
 }

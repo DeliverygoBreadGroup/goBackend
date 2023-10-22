@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 
-public class ClienteNaoEncontradoException extends Exception{
-    public ClienteNaoEncontradoException() {
+public class UsuarioNaoEncontradoException extends Exception{
+    public UsuarioNaoEncontradoException() {
         super("Usuário não encontrado");
     }
 }
