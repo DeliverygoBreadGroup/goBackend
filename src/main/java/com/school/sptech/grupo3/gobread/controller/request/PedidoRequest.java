@@ -1,11 +1,13 @@
 package com.school.sptech.grupo3.gobread.controller.request;
 
+import com.school.sptech.grupo3.gobread.entity.ItemPedido;
 import lombok.Builder;
 
 import java.util.List;
 
-@Builder(toBuilder = true)
+@Builder
 public record PedidoRequest(
-        List<Integer> diasEntrega,
-        String horaEntrega
+        List<String> diasEntrega,
+        String horarioEntrega,
+        List<ItemPedido> itensPedido
 ) {}

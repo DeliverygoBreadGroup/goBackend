@@ -31,13 +31,7 @@ public class Comercio implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fkEndereco", referencedColumnName = "id")
     private Endereco endereco;
-//    @ManyToMany
-////    @JoinTable(
-////            name = "comercio_produto",
-////            joinColumns = @JoinColumn(name = "comercio_id"),
-////            inverseJoinColumns = @JoinColumn(name = "produto_id")
-////    )
-////    private List<Produto> produtos = new ArrayList<>();
+
 
     public Comercio(Integer id, String email, String senha, String telefone, String razaoSocial, String responsavel, String cnpj, Endereco endereco) {
         this.id = id;
@@ -48,6 +42,10 @@ public class Comercio implements UserDetails {
         this.responsavel = responsavel;
         this.cnpj = cnpj;
         this.endereco = endereco;
+    }
+
+    public Comercio(Integer id) {
+        this.id = id;
     }
 
     public Comercio() {
@@ -95,20 +93,32 @@ public class Comercio implements UserDetails {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 
     public String getRazaoSocial() {
         return razaoSocial;
     }
 
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
-    }
 
     public String getResponsavel() {
         return responsavel;
+    }
+
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
 
     public void setResponsavel(String responsavel) {
@@ -121,14 +131,6 @@ public class Comercio implements UserDetails {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
     }
 
     @Override

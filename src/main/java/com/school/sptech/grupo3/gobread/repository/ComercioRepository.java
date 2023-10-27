@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ComercioRepository extends JpaRepository<Comercio, Integer> {
-    Optional<Comercio> findByEmailAndSenha(String email, String senha);
-
     Optional<Comercio> findByEmail(String email);
 
 }

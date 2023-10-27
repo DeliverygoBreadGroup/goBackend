@@ -29,9 +29,6 @@ public class Cliente implements UserDetails {
         @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "fkEndereco", referencedColumnName = "id")
         private Endereco endereco;
-//        @OneToMany(mappedBy = "cliente")
-//        private List<Pedido> pedidos;
-
 
         public Cliente(Integer id, String email, String senha, String telefone, String nome, String cpf, Endereco endereco) {
                 this.id = id;

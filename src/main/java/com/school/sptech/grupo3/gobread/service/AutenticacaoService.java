@@ -20,21 +20,18 @@ public class AutenticacaoService implements UserDetailsService {
   @Autowired
   private ComercioRepository comercioRepository;
 
-  // Método da interface implementada
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
     Optional<Cliente> clienteOpt = clienteRepository.findByEmail(username);
     Optional<Comercio> comercioOpt = comercioRepository.findByEmail(username);
 
-
     if (clienteOpt.isEmpty() && comercioOpt.isEmpty()) {
       throw new UsernameNotFoundException(String.format("usuario: %s nao encontrado", username));
-    } else if (clienteOpt.isPresent()) {
+    } else if (clienteOpt.isPresent()){
       return clienteOpt.get();
     }
     return comercioOpt.get();
-
   }
 
 }

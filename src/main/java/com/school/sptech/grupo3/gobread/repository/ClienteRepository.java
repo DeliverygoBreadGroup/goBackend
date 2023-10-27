@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-    Optional<Cliente> findByEmailAndSenha(String email, String senha);
 
     Optional<Cliente> findByEmail(String email);
 

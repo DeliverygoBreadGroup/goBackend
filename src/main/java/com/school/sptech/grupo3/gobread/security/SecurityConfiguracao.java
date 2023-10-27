@@ -58,6 +58,9 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/clientes/login"),
             new AntPathRequestMatcher("/comercios/login"),
             new AntPathRequestMatcher("/comercios/download/clientes-csv"),
+            new AntPathRequestMatcher("/pedidos/**"),
+            new AntPathRequestMatcher("/produtos/**"),
+            new AntPathRequestMatcher("/itens-comercio/**")
     };
 
         @Bean
