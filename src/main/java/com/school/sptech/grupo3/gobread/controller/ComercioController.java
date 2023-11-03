@@ -36,7 +36,8 @@ public class ComercioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ComercioResponse> buscarPorId(@PathVariable int id){
-        return comercioService.buscarComercioPorId(id);
+        ComercioResponse comercioResponse = this.comercioService.buscarComercioPorId(id);
+        return ResponseEntity.ok(comercioResponse);
     }
 
     @PutMapping("/{id}")

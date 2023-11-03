@@ -58,6 +58,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/clientes/login"),
             new AntPathRequestMatcher("/comercios/login"),
             new AntPathRequestMatcher("/comercios/download/clientes-csv"),
+            new AntPathRequestMatcher("/comercios/**"),
             new AntPathRequestMatcher("/pedidos/**"),
             new AntPathRequestMatcher("/produtos/**"),
             new AntPathRequestMatcher("/itens-comercio/**")
@@ -65,22 +66,27 @@ public class SecurityConfiguracao {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(Customizer.withDefaults())
-            .csrf(CsrfConfigurer<HttpSecurity>::disable)
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers(URLS_PERMITIDAS)
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
-            .exceptionHandling(handling -> handling
-                .authenticationEntryPoint(autenticacaoJwtEntryPoint))
-            .sessionManagement(management -> management
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            http.headers()
+                    .frameOptions().disable()
+                    .and()
+                    .cors()
+                    .and()
+                    .csrf()
+                    .disable()
+                    .authorizeHttpRequests(authorize -> authorize
+                            .requestMatchers(URLS_PERMITIDAS)
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated()
+                    )
+                    .exceptionHandling()
+                    .authenticationEntryPoint(autenticacaoJwtEntryPoint)
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+            http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+            return http.build();
         }
 
     @Bean

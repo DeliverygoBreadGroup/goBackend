@@ -12,12 +12,14 @@ import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.Endereco;
+import com.school.sptech.grupo3.gobread.mapper.ComercioMapper;
 import com.school.sptech.grupo3.gobread.mapper.ModelMapper;
 import com.school.sptech.grupo3.gobread.mapper.ResponseMapper;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -76,11 +78,10 @@ public class ComercioService {
     }
 
 
-    public ResponseEntity<ComercioResponse> buscarComercioPorId(int id) {
-        if(rep.existsById(id)){
-            return ResponseEntity.status(200).body(responseMapper.from(rep.findById(id).orElseThrow()));
-        }
-        return ResponseEntity.status(404).build();
+    public ComercioResponse buscarComercioPorId(int id) {
+        Comercio comercio = this.rep.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comercio não encontrado"));
+        return ComercioMapper.toComercioResponse(comercio);
     }
 
     public ResponseEntity<ComercioResponse> atualizarComercio(int id, ComercioRequest comercioRequest){

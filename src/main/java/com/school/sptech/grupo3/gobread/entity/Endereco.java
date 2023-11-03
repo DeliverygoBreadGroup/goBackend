@@ -33,6 +33,9 @@ public class Endereco {
         this.estado = estado;
     }
 
+    public Endereco() {
+    }
+
     @Override
     public String toString() {
         return "Endereco{" +

@@ -6,6 +6,7 @@ import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
+import com.school.sptech.grupo3.gobread.mapper.ClienteMapper;
 import com.school.sptech.grupo3.gobread.mapper.ModelMapper;
 import com.school.sptech.grupo3.gobread.mapper.ResponseMapper;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
@@ -32,10 +33,10 @@ public class ClienteService {
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
 
     public ClienteResponse buscarClientePorId(int id) throws UsuarioNaoEncontradoException {
-      Cliente cliente = this.rep.findById(id).orElseThrow(
-              () -> new UsuarioNaoEncontradoException());
-      ClienteResponse clienteResponse = responseMapper.from(cliente);
-      return clienteResponse;
+        Cliente cliente = this.rep.findById(id).orElseThrow(
+                () -> new UsuarioNaoEncontradoException());
+        ClienteResponse clienteResponse = ClienteMapper.clienteToClienteResponse(cliente);
+        return clienteResponse;
     }
 
     public LoginResponse autenticar(LoginRequest usuarioLoginDto) {
@@ -65,7 +66,7 @@ public class ClienteService {
         String senhaCriptografada = passwordEncoder.encode(clienteEnderecoAtualizado.getSenha());
         clienteEnderecoAtualizado.setSenha(senhaCriptografada);
         rep.save(clienteEnderecoAtualizado);
-        final ClienteResponse clienteResponse = responseMapper.from(clienteEnderecoAtualizado);
+        final ClienteResponse clienteResponse = ClienteMapper.clienteToClienteResponseSemPedidos(clienteEnderecoAtualizado);
         return clienteResponse;
     }
 

@@ -7,7 +7,9 @@ import java.util.List;
 
 @Builder
 public record PedidoRequest(
-        List<String> diasEntrega,
+        String diaEntrega,
         String horarioEntrega,
-        List<ItemPedido> itensPedido
+        List<ItemPedido> itensPedido,
+        Integer idCliente,
+        Integer idComercio
 ) {}

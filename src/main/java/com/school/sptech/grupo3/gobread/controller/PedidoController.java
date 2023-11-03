@@ -23,9 +23,9 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<List<PedidoResponse>> cadastrar(@RequestBody PedidoRequest pedidoRequest){
-        List<PedidoResponse> listaResponse = this.pedidoService.cadastrar(pedidoRequest);
-        return ResponseEntity.status(201).body(listaResponse);
+    public ResponseEntity<PedidoResponse> cadastrar(@RequestBody PedidoRequest pedidoRequest){
+        PedidoResponse pedidoResponse = this.pedidoService.cadastrar(pedidoRequest);
+        return ResponseEntity.status(201).body(pedidoResponse);
     }
 
 

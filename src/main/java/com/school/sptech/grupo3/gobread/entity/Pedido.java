@@ -20,5 +20,11 @@ public class Pedido {
     private String horarioEntrega;
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itensPedido;
+    @ManyToOne
+    @JoinColumn(name = "fkCliente", referencedColumnName = "id")
+    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "fkComercio", referencedColumnName = "id")
+    private Comercio comercio;
 
 }
