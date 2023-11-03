@@ -1,5 +1,6 @@
 package com.school.sptech.grupo3.gobread.mapper;
 
+import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
@@ -37,5 +38,16 @@ public class ClienteMapper {
         clienteResponse.setEmail(cliente.getEmail());
         clienteResponse.setEndereco(cliente.getEndereco());
         return clienteResponse;
+    }
+
+    public static Cliente toCliente(ClienteRequest clienteRequest){
+        Cliente cliente = new Cliente();
+        cliente.setNome(clienteRequest.nome());
+        cliente.setEmail(clienteRequest.email());
+        cliente.setSenha(clienteRequest.senha());
+        cliente.setCpf(clienteRequest.cpf());
+        cliente.setTelefone(clienteRequest.telefone());
+        cliente.setEndereco(EnderecoMapper.toEndereco(clienteRequest.endereco()));
+        return cliente;
     }
 }
