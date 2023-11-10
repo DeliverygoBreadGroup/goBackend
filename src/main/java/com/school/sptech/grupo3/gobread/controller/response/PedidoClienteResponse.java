@@ -1,19 +1,19 @@
 package com.school.sptech.grupo3.gobread.controller.response;
 
-import com.school.sptech.grupo3.gobread.entity.Comercio;
-import com.school.sptech.grupo3.gobread.entity.ItemPedido;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class PedidoResponse {
+@AllArgsConstructor
+public class PedidoClienteResponse {
     private String diaEntrega;
     private String horarioEntrega;
-    private List<ItemPedidoResponse> itensPedido;
+    private List<ItemPedidoClienteResponse> itensPedido;
+    private ComercioClienteResponse comercio;
 }

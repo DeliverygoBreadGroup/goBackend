@@ -1,9 +1,9 @@
 package com.school.sptech.grupo3.gobread.mapper;
 
 import com.school.sptech.grupo3.gobread.controller.request.PedidoRequest;
-import com.school.sptech.grupo3.gobread.controller.response.ItemPedidoResponse;
-import com.school.sptech.grupo3.gobread.controller.response.PedidoResponse;
-import com.school.sptech.grupo3.gobread.controller.response.ProdutoPedidoResponse;
+import com.school.sptech.grupo3.gobread.controller.response.*;
+import com.school.sptech.grupo3.gobread.entity.Cliente;
+import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.ItemPedido;
 import com.school.sptech.grupo3.gobread.entity.Pedido;
 
@@ -25,16 +25,48 @@ public class PedidoMapper {
         return pedidoResponse;
     }
 
-    public static List<Pedido> toListPedido(PedidoRequest pedidoRequest){
-        int qtdPedidos = pedidoRequest.diasEntrega().size();
-        List<Pedido> listPedido = new ArrayList<>();
-        for(int i = 0; i < qtdPedidos; i++){
-            Pedido pedido = new Pedido();
-            pedido.setDiaEntrega(pedidoRequest.diasEntrega().get(i));
-            pedido.setHorarioEntrega(pedidoRequest.horarioEntrega());
-            pedido.setItensPedido(pedidoRequest.itensPedido());
-            listPedido.add(pedido);
+    public static PedidoComercioResponse toPedidoComercioResponse(Pedido pedido){
+        PedidoComercioResponse pedidoComercioResponse = new PedidoComercioResponse();
+        pedidoComercioResponse.setHorarioEntrega(pedido.getHorarioEntrega());
+        pedidoComercioResponse.setItensPedido(ItemPedidoMapper.toListItemPedidoClienteResponse(pedido.getItensPedido()));
+        pedidoComercioResponse.setDiaEntrega(pedido.getDiaEntrega());
+        pedidoComercioResponse.setCliente(ClienteMapper.toClienteComercioResponse(pedido.getCliente()));
+        return pedidoComercioResponse;
+    }
+
+    public static List<PedidoComercioResponse> toListPedidoComercioResponse(List<Pedido> pedidos){
+        return pedidos.stream().map(PedidoMapper::toPedidoComercioResponse).toList();
+    }
+
+
+    public static List<PedidoClienteResponse> toListPedidoClienteResponse(List<Pedido> pedidos){
+        List<PedidoClienteResponse> pedidoResponses = pedidos.stream().map(PedidoMapper::toPedidoClienteResponse).toList();
+        return pedidoResponses;
+    }
+
+    public static PedidoClienteResponse toPedidoClienteResponse(Pedido pedido){
+        PedidoClienteResponse pedidoResponse = new PedidoClienteResponse();
+        pedidoResponse.setHorarioEntrega(pedido.getHorarioEntrega());
+        pedidoResponse.setItensPedido(ItemPedidoMapper.toListItemPedidoClienteResponse(pedido.getItensPedido()));
+        pedidoResponse.setDiaEntrega(pedido.getDiaEntrega());
+        pedidoResponse.setComercio(ComercioMapper.toComercioClienteResponse(pedido.getComercio()));
+        return pedidoResponse;
+    }
+
+    public static Pedido toPedido(PedidoRequest pedidoRequest){
+        Cliente cliente = new Cliente();
+        cliente.setId(pedidoRequest.idCliente());
+        Comercio comercio = new Comercio();
+        comercio.setId(pedidoRequest.idComercio());
+        Pedido pedido = new Pedido();
+        pedido.setDiaEntrega(pedidoRequest.diaEntrega());
+        pedido.setHorarioEntrega(pedidoRequest.horarioEntrega());
+        for (int j = 0; j < pedidoRequest.itensPedido().size(); j++){
+            pedidoRequest.itensPedido().get(j).setPedido(pedido);
         }
-        return listPedido;
+        pedido.setItensPedido(pedidoRequest.itensPedido());
+        pedido.setCliente(cliente);
+        pedido.setComercio(comercio);
+        return pedido;
     }
 }
