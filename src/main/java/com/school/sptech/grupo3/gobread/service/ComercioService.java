@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,11 @@ public class ComercioService {
 
 
     public ResponseEntity<ComercioResponse> criarComercio(ComercioRequest comercioRequest) {
+        Optional<Comercio> comercioOptional = this.rep.findByEmail(comercioRequest.email());
+        if(comercioOptional.isPresent()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já existente");
+        }
+
         final Comercio comercio = ComercioMapper.toComercio(comercioRequest);
         final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(comercio.getEndereco().getCep());
         final Comercio comercioEnderecoAtualizado = comercio.atualizarEndereco(enderecoViaCep);

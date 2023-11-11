@@ -56,6 +56,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/clientes/cadastrar"),
             new AntPathRequestMatcher("/comercios/cadastrar"),
             new AntPathRequestMatcher("/clientes/login"),
+            new AntPathRequestMatcher("/clientes/**"),
             new AntPathRequestMatcher("/comercios/login"),
             new AntPathRequestMatcher("/comercios/download/clientes-csv"),
             new AntPathRequestMatcher("/comercios/**"),

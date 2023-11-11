@@ -7,10 +7,11 @@ import java.util.List;
 
 @Builder
 public record ComercioResponse(
-
+        Integer id,
         String razaoSocial,
         String responsavel,
         String email,
+        String tipo,
         String telefone,
         Endereco endereco,
         List<PedidoComercioResponse> pedidos

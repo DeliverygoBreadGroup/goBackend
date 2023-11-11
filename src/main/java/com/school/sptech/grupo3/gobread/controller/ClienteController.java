@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/clientes")
@@ -20,7 +21,7 @@ public class ClienteController {
 
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid @RequestBody ClienteRequest clienteRequest) {
+    public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid @RequestBody ClienteRequest clienteRequest) throws ResponseStatusException {
          ClienteResponse clienteResponse =  clienteService.criarCliente(clienteRequest);
          return ResponseEntity.status(201).body(clienteResponse);
     }

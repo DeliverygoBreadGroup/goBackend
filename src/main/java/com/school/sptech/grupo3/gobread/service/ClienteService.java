@@ -11,6 +11,7 @@ import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +58,11 @@ public class ClienteService {
         return response;
     }
 
-    public ClienteResponse criarCliente(ClienteRequest clienteRequest) {
+    public ClienteResponse criarCliente(ClienteRequest clienteRequest) throws ResponseStatusException {
+        Optional<Cliente> clienteOptional = this.rep.findByEmail(clienteRequest.email());
+        if(clienteOptional.isPresent()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já existente");
+        }
         final Cliente cliente = ClienteMapper.toCliente(clienteRequest);
         final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(cliente.getEndereco().getCep());
         final Cliente clienteEnderecoAtualizado = cliente.atualizarEndereco(enderecoViaCep);

@@ -26,19 +26,21 @@ public class Cliente implements UserDetails {
         private String telefone;
         private String nome;
         private String cpf;
+        private String tipo;
         @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "fkEndereco", referencedColumnName = "id")
         private Endereco endereco;
         @OneToMany(mappedBy = "cliente")
         private List<Pedido> pedidos;
 
-        public Cliente(Integer id, String email, String senha, String telefone, String nome, String cpf, Endereco endereco, List<Pedido> pedidos) {
+        public Cliente(Integer id, String email, String senha, String telefone, String nome, String cpf, String tipo, Endereco endereco, List<Pedido> pedidos) {
                 this.id = id;
                 this.email = email;
                 this.senha = senha;
                 this.telefone = telefone;
                 this.nome = nome;
                 this.cpf = cpf;
+                this.tipo = tipo;
                 this.endereco = endereco;
                 this.pedidos = pedidos;
         }
@@ -123,6 +125,14 @@ public class Cliente implements UserDetails {
 
         public void setPedidos(List<Pedido> pedidos) {
                 this.pedidos = pedidos;
+        }
+
+        public String getTipo() {
+                return tipo;
+        }
+
+        public void setTipo(String tipo) {
+                this.tipo = tipo;
         }
 
         @Override

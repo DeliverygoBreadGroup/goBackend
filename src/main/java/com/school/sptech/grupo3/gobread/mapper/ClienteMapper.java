@@ -10,6 +10,7 @@ public class ClienteMapper {
     public static ClienteResponse clienteToClienteResponse(Cliente cliente) {
         return ClienteResponse.builder()
                 .id(cliente.getId())
+                .tipo(cliente.getTipo())
                 .nome(cliente.getNome())
                 .email(cliente.getEmail())
                 .telefone(cliente.getTelefone())
@@ -21,6 +22,7 @@ public class ClienteMapper {
     public static ClienteResponse clienteToClienteResponseSemPedidos(Cliente cliente) {
         return ClienteResponse.builder()
                 .id(cliente.getId())
+                .tipo(cliente.getTipo())
                 .nome(cliente.getNome())
                 .email(cliente.getEmail())
                 .telefone(cliente.getTelefone())
@@ -42,6 +44,7 @@ public class ClienteMapper {
 
     public static Cliente toCliente(ClienteRequest clienteRequest){
         Cliente cliente = new Cliente();
+        cliente.setTipo(clienteRequest.tipo());
         cliente.setNome(clienteRequest.nome());
         cliente.setEmail(clienteRequest.email());
         cliente.setSenha(clienteRequest.senha());

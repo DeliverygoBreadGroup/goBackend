@@ -28,14 +28,14 @@ public class Comercio implements UserDetails {
     private String razaoSocial;
     private String responsavel;
     private String cnpj;
+    private String tipo;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fkEndereco", referencedColumnName = "id")
     private Endereco endereco;
     @OneToMany(mappedBy = "comercio")
     private List<Pedido> pedidos;
 
-
-    public Comercio(Integer id, String email, String senha, String telefone, String razaoSocial, String responsavel, String cnpj, Endereco endereco, List<Pedido> pedidos) {
+    public Comercio(Integer id, String email, String senha, String telefone, String razaoSocial, String responsavel, String cnpj, String tipo, Endereco endereco, List<Pedido> pedidos) {
         this.id = id;
         this.email = email;
         this.senha = senha;
@@ -43,6 +43,7 @@ public class Comercio implements UserDetails {
         this.razaoSocial = razaoSocial;
         this.responsavel = responsavel;
         this.cnpj = cnpj;
+        this.tipo = tipo;
         this.endereco = endereco;
         this.pedidos = pedidos;
     }
@@ -101,6 +102,13 @@ public class Comercio implements UserDetails {
         return razaoSocial;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public String getResponsavel() {
         return responsavel;

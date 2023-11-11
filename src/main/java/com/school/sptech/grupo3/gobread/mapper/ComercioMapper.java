@@ -17,6 +17,8 @@ public class ComercioMapper {
 
     public static ComercioResponse toComercioResponse(Comercio comercio){
         return ComercioResponse.builder()
+                .id(comercio.getId())
+                .tipo(comercio.getTipo())
                 .email(comercio.getEmail())
                 .razaoSocial(comercio.getRazaoSocial())
                 .responsavel(comercio.getResponsavel())
@@ -28,6 +30,8 @@ public class ComercioMapper {
 
     public static ComercioResponse toComercioSemPedidoResponse(Comercio comercio){
         return ComercioResponse.builder()
+                .id(comercio.getId())
+                .tipo(comercio.getTipo())
                 .email(comercio.getEmail())
                 .razaoSocial(comercio.getRazaoSocial())
                 .responsavel(comercio.getResponsavel())
@@ -44,6 +48,7 @@ public class ComercioMapper {
         comercio.setSenha(comercioRequest.senha());
         comercio.setRazaoSocial(comercioRequest.razaoSocial());
         comercio.setTelefone(comercioRequest.telefone());
+        comercio.setTipo(comercioRequest.tipo());
         comercio.setEndereco(EnderecoMapper.toEndereco(comercioRequest.endereco()));
         return comercio;
     }
