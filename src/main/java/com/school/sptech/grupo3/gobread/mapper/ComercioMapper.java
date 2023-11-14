@@ -4,7 +4,10 @@ package com.school.sptech.grupo3.gobread.mapper;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
+
+import java.util.List;
 
 public class ComercioMapper {
 
@@ -51,5 +54,22 @@ public class ComercioMapper {
         comercio.setTipo(comercioRequest.tipo());
         comercio.setEndereco(EnderecoMapper.toEndereco(comercioRequest.endereco()));
         return comercio;
+    }
+
+    public static ComercioSemPedidoResponse toComercioSemPedidosResponse(Comercio comercio){
+        ComercioSemPedidoResponse comercioResponse = new ComercioSemPedidoResponse();
+        comercioResponse.setId(comercio.getId());
+        comercioResponse.setResponsavel(comercio.getResponsavel());
+        comercioResponse.setTipo(comercio.getTipo());
+        comercioResponse.setEmail(comercio.getEmail());
+        comercioResponse.setRazaoSocial(comercio.getRazaoSocial());
+        comercioResponse.setTelefone(comercio.getTelefone());
+        comercioResponse.setEndereco(comercio.getEndereco());
+        return comercioResponse;
+    }
+
+    public static List<ComercioSemPedidoResponse> toListComercioSemPedidosResponse(List<Comercio> comercios){
+        List<ComercioSemPedidoResponse> comerciosResponse = comercios.stream().map(ComercioMapper::toComercioSemPedidosResponse).toList();
+        return comerciosResponse;
     }
 }

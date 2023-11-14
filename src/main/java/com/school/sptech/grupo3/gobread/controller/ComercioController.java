@@ -3,6 +3,7 @@ package com.school.sptech.grupo3.gobread.controller;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ComercioService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/comercios")
@@ -48,6 +50,15 @@ public class ComercioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ComercioResponse> deletarComercio(@PathVariable int id){
         return comercioService.deletarComercio(id);
+    }
+
+    @GetMapping("/bairro")
+    public ResponseEntity<List<ComercioSemPedidoResponse>> buscarPeloBairro(@RequestParam String bairro){
+        List<ComercioSemPedidoResponse> comercios = this.comercioService.buscarPeloBairro(bairro);
+        if(comercios.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(comercios);
     }
 
 

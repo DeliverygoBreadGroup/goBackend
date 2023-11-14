@@ -6,6 +6,7 @@ import com.school.sptech.grupo3.gobread.arquivoCsv.ListaObj;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
@@ -118,5 +119,8 @@ public class ComercioService {
     }
 
 
-
+    public List<ComercioSemPedidoResponse> buscarPeloBairro(String bairro) {
+        List<Comercio> comercios = this.rep.findByEnderecoBairro(bairro);
+        return ComercioMapper.toListComercioSemPedidosResponse(comercios);
+    }
 }
