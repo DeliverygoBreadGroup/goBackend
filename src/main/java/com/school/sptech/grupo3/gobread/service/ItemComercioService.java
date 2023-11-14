@@ -2,11 +2,10 @@ package com.school.sptech.grupo3.gobread.service;
 
 
 import com.school.sptech.grupo3.gobread.controller.request.EstoqueRequest;
-import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
-import com.school.sptech.grupo3.gobread.controller.response.EstoqueResponse;
-import com.school.sptech.grupo3.gobread.controller.response.ItemComercioResponse;
+import com.school.sptech.grupo3.gobread.controller.response.*;
 import com.school.sptech.grupo3.gobread.entity.ItemComercio;
 import com.school.sptech.grupo3.gobread.mapper.ItemComercioMapper;
+import com.school.sptech.grupo3.gobread.mapper.ProdutoMapper;
 import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
 import com.school.sptech.grupo3.gobread.repository.ItemComercioRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +34,11 @@ public class ItemComercioService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comercio não encontrado");
     }
 
+    public List<ItemComercioPedidoResponse> buscarProdutosPorId(int id) {
+        List<ItemComercio> itemComercio = itemComercioRepository.findByComercioId(id);
+        List<ItemComercioPedidoResponse> list = ItemComercioMapper.toListItemComercioPedidoResponse(itemComercio);
+        return list;
+
+
+    }
 }

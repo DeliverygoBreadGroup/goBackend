@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class PedidoResponse {
+    private Integer id;
     private String diaEntrega;
     private String horarioEntrega;
     private List<ItemPedidoResponse> itensPedido;

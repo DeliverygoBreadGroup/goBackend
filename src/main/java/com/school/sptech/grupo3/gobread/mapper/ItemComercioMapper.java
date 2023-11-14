@@ -1,6 +1,7 @@
 package com.school.sptech.grupo3.gobread.mapper;
 
 import com.school.sptech.grupo3.gobread.controller.request.ItemComercioRequest;
+import com.school.sptech.grupo3.gobread.controller.response.ItemComercioPedidoResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ItemComercioResponse;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.entity.ItemComercio;
@@ -42,5 +43,16 @@ public class ItemComercioMapper {
             listaItensResponse.add(itemComercioResponse);
         }
         return listaItensResponse;
+    }
+
+    public static ItemComercioPedidoResponse toItemComercioPedidoResponse (ItemComercio itemComercio) {
+        ItemComercioPedidoResponse itemComercioPedidoResponse = new ItemComercioPedidoResponse();
+        itemComercioPedidoResponse.setProduto(ProdutoMapper.toProdutoResponse(itemComercio.getProduto()));
+        return itemComercioPedidoResponse;
+    }
+
+    public static List<ItemComercioPedidoResponse> toListItemComercioPedidoResponse (List<ItemComercio> itensComercio) {
+        List<ItemComercioPedidoResponse> itemComercioPedidoResponse = itensComercio.stream().map(ItemComercioMapper::toItemComercioPedidoResponse).toList();
+        return  itemComercioPedidoResponse;
     }
 }

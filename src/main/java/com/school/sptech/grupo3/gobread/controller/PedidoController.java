@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,18 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<PedidoResponse> cadastrar(@RequestBody PedidoRequest pedidoRequest){
         PedidoResponse pedidoResponse = this.pedidoService.cadastrar(pedidoRequest);
+        return ResponseEntity.status(201).body(pedidoResponse);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPedido(@PathVariable int id){
+        this.pedidoService.deletar(id);
+        return ResponseEntity.status(204).build();
+    }
+
+    @PostMapping("/reverter-delete")
+    public ResponseEntity<PedidoResponse> reverterDelete(){
+        PedidoResponse pedidoResponse = this.pedidoService.reverterDelete();
         return ResponseEntity.status(201).body(pedidoResponse);
     }
 

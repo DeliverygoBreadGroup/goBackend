@@ -19,6 +19,7 @@ public class PedidoMapper {
 
     public static PedidoResponse toPedidoResponse(Pedido pedido){
         PedidoResponse pedidoResponse = new PedidoResponse();
+        pedidoResponse.setId(pedido.getId());
         pedidoResponse.setHorarioEntrega(pedido.getHorarioEntrega());
         pedidoResponse.setItensPedido(ItemPedidoMapper.toListItemPedidoResponse(pedido.getItensPedido()));
         pedidoResponse.setDiaEntrega(pedido.getDiaEntrega());
@@ -27,6 +28,7 @@ public class PedidoMapper {
 
     public static PedidoComercioResponse toPedidoComercioResponse(Pedido pedido){
         PedidoComercioResponse pedidoComercioResponse = new PedidoComercioResponse();
+        pedidoComercioResponse.setId(pedido.getId());
         pedidoComercioResponse.setHorarioEntrega(pedido.getHorarioEntrega());
         pedidoComercioResponse.setItensPedido(ItemPedidoMapper.toListItemPedidoClienteResponse(pedido.getItensPedido()));
         pedidoComercioResponse.setDiaEntrega(pedido.getDiaEntrega());
@@ -46,6 +48,7 @@ public class PedidoMapper {
 
     public static PedidoClienteResponse toPedidoClienteResponse(Pedido pedido){
         PedidoClienteResponse pedidoResponse = new PedidoClienteResponse();
+        pedidoResponse.setId(pedido.getId());
         pedidoResponse.setHorarioEntrega(pedido.getHorarioEntrega());
         pedidoResponse.setItensPedido(ItemPedidoMapper.toListItemPedidoClienteResponse(pedido.getItensPedido()));
         pedidoResponse.setDiaEntrega(pedido.getDiaEntrega());

@@ -1,6 +1,18 @@
 INSERT INTO produto (nome, valor_porcao) VALUES
-('pão',3),
-('leite',10),
-('pão de queijo',1),
-('mussarela',5),
-('presunto',5);
+('Pão Francês', 2),
+('Pão de Leite', 2)
+('Pão sem Glúten', 2),
+('Pão de Forma', ),
+('Croissant de Manteiga' ,3),
+('Pão de queijo' ,1),
+('Mussarela',5),
+('Presunto',5),
+('Baguete', 10),
+('Torta', ),
+('Brownie', ),
+('Empada', ),
+('Café Expresso', 2),
+('Suco Natural', ),
+('Chás', ),
+('Dunuts', ),
+('Requeijão', ),
