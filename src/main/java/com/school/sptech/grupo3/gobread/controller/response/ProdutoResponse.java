@@ -13,5 +13,6 @@ public class ProdutoResponse{
     private Integer id;
     private String nome;
     private Integer valorPorcao;
+    private String tipoPorcao;
 
 }

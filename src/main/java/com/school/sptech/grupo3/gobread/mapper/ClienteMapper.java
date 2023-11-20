@@ -47,7 +47,6 @@ public class ClienteMapper {
     public static Cliente toCliente(ClienteRequest clienteRequest){
         Cliente cliente = new Cliente();
         cliente.setTipo(clienteRequest.tipo());
-        cliente.setAssinatura(clienteRequest.assinatura());
         cliente.setNome(clienteRequest.nome());
         cliente.setEmail(clienteRequest.email());
         cliente.setSenha(clienteRequest.senha());

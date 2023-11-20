@@ -59,6 +59,7 @@ public class ClienteService {
         response.setToken(token);
         response.setCliente(ClienteMapper.clienteToClienteResponse(usuarioAutenticado));
         return response;
+
     }
 
     public ClienteResponse criarCliente(ClienteRequest clienteRequest) throws ResponseStatusException {

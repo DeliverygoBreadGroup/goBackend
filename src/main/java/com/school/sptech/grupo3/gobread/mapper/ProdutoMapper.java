@@ -18,6 +18,7 @@ public class ProdutoMapper {
         prodResponse.setId(produto.getId());
         prodResponse.setNome(produto.getNome());
         prodResponse.setValorPorcao(produto.getValorPorcao());
+        prodResponse.setTipoPorcao(produto.getTipoPorcao());
         return prodResponse;
     }
 

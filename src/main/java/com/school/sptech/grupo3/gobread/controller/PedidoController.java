@@ -20,9 +20,9 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<PedidoResponse> cadastrar(@RequestBody PedidoRequest pedidoRequest){
-        PedidoResponse pedidoResponse = this.pedidoService.cadastrar(pedidoRequest);
-        return ResponseEntity.status(201).body(pedidoResponse);
+    public ResponseEntity<List<String>> cadastrar(@RequestBody PedidoRequest pedidoRequest){
+        List<String> listaDeDias = this.pedidoService.cadastrar(pedidoRequest);
+        return ResponseEntity.status(200).body(listaDeDias);
     }
 
     @DeleteMapping("/{id}")
@@ -37,5 +37,10 @@ public class PedidoController {
         return ResponseEntity.status(201).body(pedidoResponse);
     }
 
+    @PostMapping("/salvar-pedidos")
+    public ResponseEntity<PedidoResponse> salvarPedidos(){
+        PedidoResponse pedidoResponse = this.pedidoService.salvarPedidos();
+        return ResponseEntity.status(201).body(pedidoResponse);
+    }
 
 }

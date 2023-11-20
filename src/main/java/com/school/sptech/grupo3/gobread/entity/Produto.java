@@ -15,6 +15,7 @@ public class Produto {
     private Integer id;
     private String nome;
     private Integer valorPorcao;
+    private String tipoPorcao;
 
     public Produto(Integer id) {
         this.id = id;
@@ -42,5 +43,13 @@ public class Produto {
 
     public void setValorPorcao(Integer valorPorcao) {
         this.valorPorcao = valorPorcao;
+    }
+
+    public String getTipoPorcao() {
+        return tipoPorcao;
+    }
+
+    public void setTipoPorcao(String tipoPorcao) {
+        this.tipoPorcao = tipoPorcao;
     }
 }
