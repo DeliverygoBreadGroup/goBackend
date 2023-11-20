@@ -3,7 +3,7 @@ package com.school.sptech.grupo3.gobread.controller;
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
-import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginClienteResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ClienteService;
 import jakarta.validation.Valid;
@@ -33,8 +33,8 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
-        LoginResponse response = clienteService.autenticar(loginRequest);
+    public ResponseEntity<LoginClienteResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
+        LoginClienteResponse response = clienteService.autenticar(loginRequest);
         return ResponseEntity.status(200).body(response);
     }
 
@@ -49,5 +49,12 @@ public class ClienteController {
         boolean isDeleted =  clienteService.deletarCliente(id);
         return ResponseEntity.status(204).build();
     }
+
+    @PatchMapping("/assinatura/{id}")
+    public ResponseEntity<ClienteResponse> atualizarAssinatura(@RequestParam String assinatura, @PathVariable int id) throws UsuarioNaoEncontradoException {
+        ClienteResponse clienteResponse = clienteService.atualizarAssinatura(assinatura, id);
+        return ResponseEntity.status(200).body(clienteResponse);
+    }
+
 
 }

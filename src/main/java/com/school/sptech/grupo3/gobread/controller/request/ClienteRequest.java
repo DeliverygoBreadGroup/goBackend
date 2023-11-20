@@ -20,5 +20,8 @@ public record ClienteRequest(
 
     @NotBlank
     String tipo,
+
+    @NotBlank
+    String assinatura,
     EnderecoRequest endereco
 ) {}

@@ -4,7 +4,7 @@ import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
-import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginComercioResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ComercioService;
 import jakarta.validation.Valid;
@@ -31,8 +31,8 @@ public class ComercioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
-        LoginResponse response = comercioService.autenticar(loginRequest);
+    public ResponseEntity<LoginComercioResponse> loginCliente(@RequestBody LoginRequest loginRequest) throws UsuarioNaoEncontradoException {
+        LoginComercioResponse response = comercioService.autenticar(loginRequest);
         return ResponseEntity.status(200).body(response);
     }
 

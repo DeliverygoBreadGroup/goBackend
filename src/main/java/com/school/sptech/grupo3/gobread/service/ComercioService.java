@@ -7,7 +7,7 @@ import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
-import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginComercioResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import com.school.sptech.grupo3.gobread.mapper.ComercioMapper;
@@ -57,7 +57,7 @@ public class ComercioService {
         return ResponseEntity.status(201).body(comercioResponse);
     }
 
-    public LoginResponse autenticar(LoginRequest usuarioLoginDto) {
+    public LoginComercioResponse autenticar(LoginRequest usuarioLoginDto) {
 
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.email(), usuarioLoginDto.senha());
@@ -73,7 +73,9 @@ public class ComercioService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = gerenciadorTokenJwt.generateToken(authentication);
-        LoginResponse response = new LoginResponse(token);
+        LoginComercioResponse response = new LoginComercioResponse();
+        response.setToken(token);
+        response.setComercio(ComercioMapper.toComercioResponse(usuarioAutenticado));
         return response;
     }
 

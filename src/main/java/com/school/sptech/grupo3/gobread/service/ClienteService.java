@@ -4,7 +4,7 @@ import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
-import com.school.sptech.grupo3.gobread.controller.response.LoginResponse;
+import com.school.sptech.grupo3.gobread.controller.response.LoginClienteResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.mapper.ClienteMapper;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class ClienteService {
         return clienteResponse;
     }
 
-    public LoginResponse autenticar(LoginRequest usuarioLoginDto) {
+    public LoginClienteResponse autenticar(LoginRequest usuarioLoginDto) {
 
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.email(), usuarioLoginDto.senha());
@@ -54,7 +55,9 @@ public class ClienteService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = gerenciadorTokenJwt.generateToken(authentication);
-        LoginResponse response = new LoginResponse(token);
+        LoginClienteResponse response = new LoginClienteResponse();
+        response.setToken(token);
+        response.setCliente(ClienteMapper.clienteToClienteResponse(usuarioAutenticado));
         return response;
     }
 
@@ -96,6 +99,12 @@ public class ClienteService {
     }
 
 
-
-
+    public ClienteResponse atualizarAssinatura(String assinatura, int id) throws UsuarioNaoEncontradoException {
+        Cliente cliente = rep.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário com esse id não encontrado")
+        );
+        cliente.setAssinatura(assinatura);
+        rep.save(cliente);
+        return ClienteMapper.clienteToClienteResponse(cliente);
+    }
 }

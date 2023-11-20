@@ -11,8 +11,8 @@ public record ClienteResponse(
     String nome,
     String telefone,
     String email,
-
     String tipo,
+    String assinatura,
     Endereco endereco,
 
     List<PedidoClienteResponse> pedidos
