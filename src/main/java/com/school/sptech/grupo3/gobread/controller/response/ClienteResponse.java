@@ -12,6 +12,7 @@ public record ClienteResponse(
     String telefone,
     String email,
     String tipo,
+    String cpf,
     String assinatura,
     Endereco endereco,
 

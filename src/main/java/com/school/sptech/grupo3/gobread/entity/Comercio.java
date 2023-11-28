@@ -1,18 +1,11 @@
 package com.school.sptech.grupo3.gobread.entity;
 
-import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
+import com.school.sptech.grupo3.gobread.integrations.apiviacep.AddressViaCep;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.school.sptech.grupo3.gobread.repository;
 
-import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +10,7 @@ public interface ComercioRepository extends JpaRepository<Comercio, Integer> {
     Optional<Comercio> findByEmail(String email);
 
     List<Comercio> findByEnderecoBairro(String bairro);
+
+
 
 }

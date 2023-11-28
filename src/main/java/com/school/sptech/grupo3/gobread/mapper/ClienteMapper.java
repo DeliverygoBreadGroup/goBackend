@@ -1,6 +1,7 @@
 package com.school.sptech.grupo3.gobread.mapper;
 
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
+import com.school.sptech.grupo3.gobread.controller.request.ClienteUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
@@ -11,6 +12,7 @@ public class ClienteMapper {
         return ClienteResponse.builder()
                 .id(cliente.getId())
                 .tipo(cliente.getTipo())
+                .cpf(cliente.getCpf())
                 .assinatura(cliente.getAssinatura())
                 .nome(cliente.getNome())
                 .email(cliente.getEmail())
@@ -24,6 +26,7 @@ public class ClienteMapper {
         return ClienteResponse.builder()
                 .id(cliente.getId())
                 .tipo(cliente.getTipo())
+                .cpf(cliente.getCpf())
                 .assinatura(cliente.getAssinatura())
                 .nome(cliente.getNome())
                 .email(cliente.getEmail())
@@ -53,6 +56,17 @@ public class ClienteMapper {
         cliente.setCpf(clienteRequest.cpf());
         cliente.setTelefone(clienteRequest.telefone());
         cliente.setEndereco(EnderecoMapper.toEndereco(clienteRequest.endereco()));
+        return cliente;
+    }
+
+    public static Cliente toCliente(ClienteUpdateRequest clienteUpdateRequest){
+        Cliente cliente = new Cliente();
+        cliente.setTipo(clienteUpdateRequest.getTipo());
+        cliente.setNome(clienteUpdateRequest.getNome());
+        cliente.setEmail(clienteUpdateRequest.getEmail());
+        cliente.setCpf(clienteUpdateRequest.getCpf());
+        cliente.setTelefone(clienteUpdateRequest.getTelefone());
+        cliente.setEndereco(EnderecoMapper.toEndereco(clienteUpdateRequest.getEndereco()));
         return cliente;
     }
 }

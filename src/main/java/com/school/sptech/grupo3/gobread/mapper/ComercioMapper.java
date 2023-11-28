@@ -2,6 +2,7 @@ package com.school.sptech.grupo3.gobread.mapper;
 
 
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
+import com.school.sptech.grupo3.gobread.controller.request.ComercioUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
@@ -22,6 +23,7 @@ public class ComercioMapper {
         return ComercioResponse.builder()
                 .id(comercio.getId())
                 .tipo(comercio.getTipo())
+                .cnpj(comercio.getCnpj())
                 .email(comercio.getEmail())
                 .razaoSocial(comercio.getRazaoSocial())
                 .responsavel(comercio.getResponsavel())
@@ -35,6 +37,7 @@ public class ComercioMapper {
         return ComercioResponse.builder()
                 .id(comercio.getId())
                 .tipo(comercio.getTipo())
+                .cnpj(comercio.getCnpj())
                 .email(comercio.getEmail())
                 .razaoSocial(comercio.getRazaoSocial())
                 .responsavel(comercio.getResponsavel())
@@ -53,6 +56,18 @@ public class ComercioMapper {
         comercio.setTelefone(comercioRequest.telefone());
         comercio.setTipo(comercioRequest.tipo());
         comercio.setEndereco(EnderecoMapper.toEndereco(comercioRequest.endereco()));
+        return comercio;
+    }
+
+    public static Comercio toComercio(ComercioUpdateRequest comercioRequest){
+        Comercio comercio = new Comercio();
+        comercio.setResponsavel(comercioRequest.getResponsavel());
+        comercio.setEmail(comercioRequest.getEmail());
+        comercio.setCnpj(comercioRequest.getCnpj());
+        comercio.setRazaoSocial(comercioRequest.getRazaoSocial());
+        comercio.setTelefone(comercioRequest.getTelefone());
+        comercio.setTipo(comercioRequest.getTipo());
+        comercio.setEndereco(EnderecoMapper.toEndereco(comercioRequest.getEndereco()));
         return comercio;
     }
 

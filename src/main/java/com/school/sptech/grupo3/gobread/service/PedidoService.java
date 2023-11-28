@@ -42,6 +42,7 @@ public class PedidoService {
     }
 
     public PedidoResponse salvarPedidos() {
+        diasDosPedidosFeitos = new ArrayList<>();
         Pedido pedido = new Pedido();
         int tamanho = filaPedidos.getTamanho();
         for (int i = 0; i < tamanho; i++) {

@@ -1,21 +1,24 @@
 package com.school.sptech.grupo3.gobread.service;
 
-import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.arquivoCsv.ArquivoCsvService;
+import com.school.sptech.grupo3.gobread.arquivoCsv.ArquivoTxtService;
 import com.school.sptech.grupo3.gobread.arquivoCsv.ListaObj;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
+import com.school.sptech.grupo3.gobread.controller.request.ComercioUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginComercioResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
 import com.school.sptech.grupo3.gobread.entity.Comercio;
+import com.school.sptech.grupo3.gobread.integrations.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.mapper.ComercioMapper;
-import com.school.sptech.grupo3.gobread.mapper.EnderecoMapper;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,8 +27,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,13 +92,15 @@ public class ComercioService {
         return ComercioMapper.toComercioResponse(comercio);
     }
 
-    public ResponseEntity<ComercioResponse> atualizarComercio(int id, ComercioRequest comercioRequest){
+    public ResponseEntity<ComercioResponse> atualizarComercio(int id, ComercioUpdateRequest comercioRequest){
         if(rep.existsById(id)){
             final Comercio comercio = ComercioMapper.toComercio(comercioRequest);
             final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(comercio.getEndereco().getCep());
             final Comercio comercioEnderecoAtualizado = comercio.atualizarEndereco(enderecoViaCep);
             comercioEnderecoAtualizado.setId(id);
             comercioEnderecoAtualizado.getEndereco().setId(id);
+            Optional<Comercio> comercioOptional = rep.findById(id);
+            comercioEnderecoAtualizado.setSenha(comercioOptional.get().getSenha());
             rep.save(comercioEnderecoAtualizado);
             final ComercioResponse comercioResponse = ComercioMapper.toComercioSemPedidoResponse(comercioEnderecoAtualizado);
             return ResponseEntity.status(200).body(comercioResponse);
@@ -124,5 +132,38 @@ public class ComercioService {
     public List<ComercioSemPedidoResponse> buscarPeloBairro(String bairro) {
         List<Comercio> comercios = this.rep.findByEnderecoBairro(bairro);
         return ComercioMapper.toListComercioSemPedidosResponse(comercios);
+    }
+
+    public void gerarArquivoTxt(int idComercio) {
+        Comercio comercio = this.rep.findById(idComercio).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comercio não encontrado")
+        );
+        ArquivoTxtService.gravaArquivoTxT(comercio, "clientes.txt");
+    }
+
+    public boolean upload(int idComercio, MultipartFile file) {
+        gerarArquivoTxt(idComercio);
+        try{
+            Resource resource = new ClassPathResource("/clientes.txt");
+            File file2 = resource.getFile();
+
+            InputStream conteudo1 = file.getInputStream();
+            InputStream conteudo2 = new FileInputStream(file2);
+
+            byte[] bytes1 = conteudo1.readAllBytes();
+            byte[] bytes2 = conteudo2.readAllBytes();
+
+            if(Arrays.equals(bytes1, bytes2)){
+                return true;
+            }
+            return false;
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            throw new ResponseStatusException(422, "Diretório não encontrado", null);
+        } catch (IOException e){
+            e.printStackTrace();
+            throw new ResponseStatusException(422, "Não foi possível converter para byte[]", null);
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.school.sptech.grupo3.gobread.controller;
 
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
+import com.school.sptech.grupo3.gobread.controller.request.ClienteUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginClienteResponse;
@@ -39,8 +40,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id,@Valid @RequestBody ClienteRequest clienteRequest) throws UsuarioNaoEncontradoException {
-        ClienteResponse clienteResponse = clienteService.atualizarCliente(id, clienteRequest);
+    public ResponseEntity<ClienteResponse> atualizarCliente(@PathVariable int id,@Valid @RequestBody ClienteUpdateRequest clienteUpdateRequest) throws UsuarioNaoEncontradoException {
+        ClienteResponse clienteResponse = clienteService.atualizarCliente(id, clienteUpdateRequest);
         return ResponseEntity.status(200).body(clienteResponse);
     }
 

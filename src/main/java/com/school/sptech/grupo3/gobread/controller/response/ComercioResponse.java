@@ -12,6 +12,7 @@ public record ComercioResponse(
         String responsavel,
         String email,
         String tipo,
+        String cnpj,
         String telefone,
         Endereco endereco,
         List<PedidoComercioResponse> pedidos

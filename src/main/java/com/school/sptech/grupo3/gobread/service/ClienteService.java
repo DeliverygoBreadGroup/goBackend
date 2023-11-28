@@ -1,13 +1,14 @@
 package com.school.sptech.grupo3.gobread.service;
 
-import com.school.sptech.grupo3.gobread.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.controller.request.ClienteRequest;
+import com.school.sptech.grupo3.gobread.controller.request.ClienteUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginClienteResponse;
-import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
-import com.school.sptech.grupo3.gobread.mapper.ClienteMapper;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
+import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
+import com.school.sptech.grupo3.gobread.integrations.apiviacep.AddressViaCep;
+import com.school.sptech.grupo3.gobread.mapper.ClienteMapper;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.Optional;
 
@@ -77,13 +77,15 @@ public class ClienteService {
         return clienteResponse;
     }
 
-    public ClienteResponse atualizarCliente(int id, ClienteRequest clienteRequest) throws UsuarioNaoEncontradoException {
+    public ClienteResponse atualizarCliente(int id, ClienteUpdateRequest clienteRequest) throws UsuarioNaoEncontradoException {
         if(rep.existsById(id)){
             final Cliente cliente = ClienteMapper.toCliente(clienteRequest);
             final AddressViaCep enderecoViaCep = enderecoService.buscarEnderecoViaCep(cliente.getEndereco().getCep());
             final Cliente clienteEnderecoAtualizado = cliente.atualizarEndereco(enderecoViaCep);
             clienteEnderecoAtualizado.setId(id);
             clienteEnderecoAtualizado.getEndereco().setId(id);
+            Optional<Cliente> cliente1 = rep.findById(id);
+            clienteEnderecoAtualizado.setSenha(cliente1.get().getSenha());
             rep.save(clienteEnderecoAtualizado);
             final ClienteResponse clienteResponse = ClienteMapper.clienteToClienteResponseSemPedidos(clienteEnderecoAtualizado);
             return clienteResponse;

@@ -1,4 +1,4 @@
-package com.school.sptech.grupo3.gobread.apiviacep;
+package com.school.sptech.grupo3.gobread.integrations.apiviacep;
 
 public record AddressViaCep(
         String cep,
