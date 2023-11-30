@@ -1,33 +1,39 @@
 package com.school.sptech.grupo3.gobread.arquivoCsv;
 
-import com.school.sptech.grupo3.gobread.entity.Cliente;
-import com.school.sptech.grupo3.gobread.entity.Comercio;
-import com.school.sptech.grupo3.gobread.entity.Pedido;
-import org.springframework.stereotype.Component;
+import com.school.sptech.grupo3.gobread.entity.*;
+import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
+import com.school.sptech.grupo3.gobread.repository.ProdutoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class ArquivoTxtService {
+
+    private final ComercioRepository comercioRepository;
+    private final ProdutoRepository produtoRepository;
 
     public static void gravaRegistro(String registro, String nomeArq, String action) {
         BufferedWriter saida = null;
 
         try {
-            // Obtém o caminho do diretório resources
             String resourcesPath = ArquivoTxtService.class.getClassLoader().getResource("").getPath();
 
-            // Cria o caminho completo do arquivo
             String caminhoArquivo = resourcesPath + File.separator + nomeArq;
 
-            // Abre o arquivo para escrita
             saida = new BufferedWriter(new FileWriter(caminhoArquivo, !action.equals("clean")));
         } catch (IOException erro) {
             System.out.println("Erro na abertura do arquivo");
@@ -102,4 +108,65 @@ public class ArquivoTxtService {
         gravaRegistro(trailer, nomeArq, "write");
     }
 
+    public List<ItemComercio> importTxt(MultipartFile file) {
+        BufferedReader entrada = null;
+        String tipoRegistro, registro;
+
+        try {
+
+            String resourcesPath = new File("src/main/resources").getAbsolutePath();
+
+            Path filePath = Path.of(resourcesPath, "produtos.txt");
+
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            entrada = new BufferedReader(new FileReader(filePath.toFile()));
+
+
+            registro = entrada.readLine();
+
+            List<ItemComercio> itensComercio = new ArrayList<>();
+
+            Comercio comercio = null;
+
+            while(registro != null){
+
+
+                ItemComercio itemComercio = null;
+
+                tipoRegistro = registro.substring(0, 2);
+
+                if(tipoRegistro.equals("02")){
+                    String email = registro.substring(2, 32).trim();
+                    comercio = this.comercioRepository.findByEmail(email).orElseThrow(
+                            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Comércio não encontrado")
+                    );
+                    comercio.setEmail(registro.substring(32, 62).trim());
+                    comercio.setResponsavel(registro.substring(62, 92).trim());
+                    comercio.setTelefone(registro.substring(92, 103).trim());
+                    comercio.setRazaoSocial(registro.substring(103, 133).trim());
+                    comercio = this.comercioRepository.save(comercio);
+                } else if (tipoRegistro.equals("03")){
+                    itemComercio = new ItemComercio();
+                    Optional<Produto> produto = this.produtoRepository.findByNome(registro.substring(2, 32).trim());
+                    if(produto.isPresent()){
+                        itemComercio.setProduto(produto.get());
+                    }
+                    itemComercio.setComercio(comercio);
+                    itensComercio.add(itemComercio);
+                }
+                registro = entrada.readLine();
+            }
+
+            entrada.close();
+            return itensComercio;
+
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+            throw new ResponseStatusException(422, "Diretório não encontrado", null);
+        } catch (IOException e){
+            e.printStackTrace();
+            throw new ResponseStatusException(422, "Não foi possível converter para byte[]", null);
+        }
+    }
 }

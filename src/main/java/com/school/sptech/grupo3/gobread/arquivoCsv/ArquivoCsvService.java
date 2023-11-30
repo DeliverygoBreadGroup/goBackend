@@ -4,8 +4,10 @@ import com.school.sptech.grupo3.gobread.entity.Cliente;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileCopyUtils;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Formatter;
 import java.util.FormatterClosedException;
 

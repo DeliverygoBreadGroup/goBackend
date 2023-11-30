@@ -5,6 +5,7 @@ import com.school.sptech.grupo3.gobread.controller.request.ComercioUpdateRequest
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioResponse;
 import com.school.sptech.grupo3.gobread.controller.response.ComercioSemPedidoResponse;
+import com.school.sptech.grupo3.gobread.controller.response.EstoqueResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginComercioResponse;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.service.ComercioService;
@@ -117,12 +118,12 @@ public class ComercioController {
         }
     }
 
-    @PostMapping("/upload/clientes-txt/{idComercio}")
-    public ResponseEntity<Void> upload(@RequestParam("file") MultipartFile file, @PathVariable int idComercio){
-        boolean sucesso = this.comercioService.upload(idComercio, file);
-        if(sucesso){
-            return ResponseEntity.status(200).build();
+    @PostMapping("/upload/produtos-txt")
+    public ResponseEntity<EstoqueResponse> upload(@RequestParam("file") MultipartFile file){
+        EstoqueResponse estoqueResponse = this.comercioService.upload(file);
+        if(estoqueResponse.getItensComercio().isEmpty()){
+            return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(400).build();
+        return ResponseEntity.status(200).body(estoqueResponse);
     }
 }
