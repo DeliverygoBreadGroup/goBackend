@@ -114,6 +114,8 @@ public class ComercioService {
                 itemPedidoRepository.deleteAll(itens);
             }
             pedidoRepository.deleteAll(pedidos);
+            List<ItemComercio> itensComercio = itemComercioRepository.findByComercioId(id);
+            itemComercioRepository.deleteAll(itensComercio);
             rep.deleteById(id);
             return ResponseEntity.status(204).build();
         }
