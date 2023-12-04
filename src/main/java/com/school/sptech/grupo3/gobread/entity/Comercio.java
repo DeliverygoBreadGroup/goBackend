@@ -145,6 +145,7 @@ public class Comercio implements UserDetails {
         this.pedidos = pedidos;
     }
 
+
     @Override
     public String toString() {
         return "Comercio{" +

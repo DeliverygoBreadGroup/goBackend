@@ -15,6 +15,5 @@ public record ClienteResponse(
     String cpf,
     String assinatura,
     Endereco endereco,
-
     List<PedidoClienteResponse> pedidos
 ) {}

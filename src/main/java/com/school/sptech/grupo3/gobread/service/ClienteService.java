@@ -6,10 +6,14 @@ import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.ClienteResponse;
 import com.school.sptech.grupo3.gobread.controller.response.LoginClienteResponse;
 import com.school.sptech.grupo3.gobread.entity.Cliente;
+import com.school.sptech.grupo3.gobread.entity.ItemPedido;
+import com.school.sptech.grupo3.gobread.entity.Pedido;
 import com.school.sptech.grupo3.gobread.exceptions.UsuarioNaoEncontradoException;
 import com.school.sptech.grupo3.gobread.integrations.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.mapper.ClienteMapper;
 import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
+import com.school.sptech.grupo3.gobread.repository.ItemPedidoRepository;
+import com.school.sptech.grupo3.gobread.repository.PedidoRepository;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +36,8 @@ public class ClienteService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
+    private final PedidoRepository pedidoRepository;
+    private final ItemPedidoRepository itemPedidoRepository;
 
     public ClienteResponse buscarClientePorId(int id) throws UsuarioNaoEncontradoException {
         Cliente cliente = this.rep.findById(id).orElseThrow(
@@ -94,8 +101,15 @@ public class ClienteService {
     }
 
     public boolean deletarCliente(int id) throws UsuarioNaoEncontradoException {
-        if(rep.existsById(id)){
-            this.rep.deleteById(id);
+        Optional<Cliente> cliente = rep.findById(id);
+        if(cliente.isPresent()){
+            List<Pedido> pedidos = pedidoRepository.findByCliente(cliente.get());
+            for(int i = 0; i < pedidos.size(); i++){
+                List<ItemPedido> itens = itemPedidoRepository.findByPedido(pedidos.get(i));
+                itemPedidoRepository.deleteAll(itens);
+            }
+            pedidoRepository.deleteAll(pedidos);
+            rep.deleteById(id);
             return true;
         }
         throw new UsuarioNaoEncontradoException();

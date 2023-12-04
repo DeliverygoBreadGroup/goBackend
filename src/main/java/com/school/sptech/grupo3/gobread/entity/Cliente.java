@@ -139,6 +139,7 @@ public class Cliente implements UserDetails {
                 this.assinatura = assinatura;
         }
 
+
         @Override
         public String toString() {
                 return "Cliente{" +

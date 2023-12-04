@@ -7,15 +7,11 @@ import com.school.sptech.grupo3.gobread.controller.request.ComercioRequest;
 import com.school.sptech.grupo3.gobread.controller.request.ComercioUpdateRequest;
 import com.school.sptech.grupo3.gobread.controller.request.LoginRequest;
 import com.school.sptech.grupo3.gobread.controller.response.*;
-import com.school.sptech.grupo3.gobread.entity.Cliente;
-import com.school.sptech.grupo3.gobread.entity.Comercio;
-import com.school.sptech.grupo3.gobread.entity.ItemComercio;
+import com.school.sptech.grupo3.gobread.entity.*;
 import com.school.sptech.grupo3.gobread.integrations.apiviacep.AddressViaCep;
 import com.school.sptech.grupo3.gobread.mapper.ComercioMapper;
 import com.school.sptech.grupo3.gobread.mapper.ItemComercioMapper;
-import com.school.sptech.grupo3.gobread.repository.ClienteRepository;
-import com.school.sptech.grupo3.gobread.repository.ComercioRepository;
-import com.school.sptech.grupo3.gobread.repository.ItemComercioRepository;
+import com.school.sptech.grupo3.gobread.repository.*;
 import com.school.sptech.grupo3.gobread.security.GerenciadorTokenJwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +40,8 @@ public class ComercioService {
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final ArquivoTxtService arquivoTxtService;
     private final ItemComercioRepository itemComercioRepository;
+    private final PedidoRepository pedidoRepository;
+    private final ItemPedidoRepository itemPedidoRepository;
 
 
     public ResponseEntity<ComercioResponse> criarComercio(ComercioRequest comercioRequest) {
@@ -108,7 +106,14 @@ public class ComercioService {
     }
 
     public ResponseEntity<ComercioResponse> deletarComercio(int id) {
-        if(rep.existsById(id)){
+        Optional<Comercio> comercio = rep.findById(id);
+        if(comercio.isPresent()){
+            List<Pedido> pedidos = pedidoRepository.findByComercio(comercio.get());
+            for(int i = 0; i < pedidos.size(); i++){
+                List<ItemPedido> itens = itemPedidoRepository.findByPedido(pedidos.get(i));
+                itemPedidoRepository.deleteAll(itens);
+            }
+            pedidoRepository.deleteAll(pedidos);
             rep.deleteById(id);
             return ResponseEntity.status(204).build();
         }
