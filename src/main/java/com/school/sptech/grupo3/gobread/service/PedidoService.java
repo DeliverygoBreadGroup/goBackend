@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +66,32 @@ public class PedidoService {
         Pedido pedido = (Pedido) pilhaPedidos.pop();
         this.pedidoRepository.save(pedido);
         return PedidoMapper.toPedidoResponse(pedido);
+    }
+
+    public void atualizarStatusPendente(int id) {
+        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado")
+        );
+        if(pedido.getStatus().equals("pendente")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pedido já está pendente");
+        }
+        pedido.setStatus("pendente");
+        Random random = new Random();
+        pedido.setCodigoVerificacao(random.nextInt(9000)+ 1000);
+        pedidoRepository.save(pedido);
+    }
+
+    public void atualizarStatusConfirmado(int id, Integer codigoVerificacao) {
+        Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado")
+        );
+        if(pedido.getStatus().equals("confirmado")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pedido já está confirmado");
+        }
+        if(pedido.getCodigoVerificacao() != codigoVerificacao){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Código de verificação incorreto!");
+        }
+        pedido.setStatus("confirmado");
+        pedidoRepository.save(pedido);
     }
 }

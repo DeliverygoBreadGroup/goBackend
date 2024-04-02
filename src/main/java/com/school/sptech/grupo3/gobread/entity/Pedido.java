@@ -26,5 +26,7 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "fkComercio", referencedColumnName = "id")
     private Comercio comercio;
+    private String status;
+    private Integer codigoVerificacao;
 
 }

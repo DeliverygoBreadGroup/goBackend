@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 

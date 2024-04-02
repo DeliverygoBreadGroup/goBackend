@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos")
+@RequestMapping("/api/pedidos")
 @RequiredArgsConstructor
 public class PedidoController {
 
@@ -41,6 +41,18 @@ public class PedidoController {
     public ResponseEntity<PedidoResponse> salvarPedidos(){
         PedidoResponse pedidoResponse = this.pedidoService.salvarPedidos();
         return ResponseEntity.status(201).body(pedidoResponse);
+    }
+
+    @PutMapping("/att-status-pendente/${id}")
+    public ResponseEntity<Void> atualizarStatusPendente(@PathVariable int id){
+        this.pedidoService.atualizarStatusPendente(id);
+        return ResponseEntity.status(200).build();
+    }
+
+    @PutMapping("/att-status-confirmado/${id}")
+    public ResponseEntity<Void> atualizarStatusConfirmado(@PathVariable int id, @RequestParam Integer codigoVerificacao){
+        this.pedidoService.atualizarStatusConfirmado(id, codigoVerificacao);
+        return ResponseEntity.status(200).build();
     }
 
 }

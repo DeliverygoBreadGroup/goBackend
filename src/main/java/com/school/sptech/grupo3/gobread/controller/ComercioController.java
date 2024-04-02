@@ -22,7 +22,7 @@ import java.io.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comercios")
+@RequestMapping("/api/comercios")
 @RequiredArgsConstructor
 public class ComercioController {
 
